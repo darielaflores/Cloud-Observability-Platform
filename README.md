@@ -26,68 +26,6 @@ infra/terraform/
 
 ---
 
-## 🚀 Configuración inicial (una sola vez)
-
-### 1. Prerrequisitos
-
-```bash
-# Instalar Azure CLI
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
-# Instalar Terraform
-wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-sudo apt update && sudo apt install terraform
-
-# Login en Azure
-az login
-```
-
-### 2. Ejecutar bootstrap
-
-```bash
-chmod +x scripts/bootstrap.sh
-./scripts/bootstrap.sh tu-sufijo-unico   # ej: ./bootstrap.sh abc123
-```
-
-Este script:
-- Crea el Resource Group y Storage Account para el estado remoto
-- Crea un Service Principal con los permisos necesarios
-- **Muestra los secretos que debes añadir a GitHub**
-
-### 3. Configurar variables locales
-
-```bash
-cp terraform.tfvars.example terraform.tfvars
-# Edita terraform.tfvars con tus valores reales
-```
-
-### 4. Primer despliegue local
-
-```bash
-terraform init
-terraform plan
-terraform apply
-```
-
----
-
-## 🔐 Secretos de GitHub Actions
-
-Ve a tu repo → **Settings → Secrets and variables → Actions** y añade:
-
-| Secret | Descripción |
-|--------|-------------|
-| `ARM_SUBSCRIPTION_ID` | ID de tu suscripción Azure Student |
-| `ARM_TENANT_ID` | Tenant ID de Azure AD |
-| `ARM_CLIENT_ID` | Client ID del Service Principal |
-| `ARM_CLIENT_SECRET` | Client Secret del Service Principal |
-| `TF_STATE_STORAGE_ACCOUNT` | Nombre del storage account del estado |
-| `OWNER_EMAIL` | Tu email universitario |
-| `ALERT_EMAIL` | Email para recibir alertas |
-| `INFRACOST_API_KEY` | *(Opcional)* API key de Infracost para costes |
-
----
 
 ## 🔄 Flujo del pipeline de GitHub Actions
 
@@ -148,32 +86,5 @@ Después del primer `apply`, sigue los pasos del output de Terraform:
 | Key Vault | ~$0.03 |
 | **Total estimado** | **~$12-17/mes** |
 
-> 💡 Para reducir costes, para el contenedor de Grafana cuando no lo uses:
-> ```bash
-> az container stop --name aci-grafana-dev --resource-group rg-cloudmon-dev
-> ```
-
 ---
 
-## 🛠️ Comandos útiles
-
-```bash
-# Ver estado actual
-terraform show
-
-# Refrescar estado sin aplicar cambios
-terraform refresh
-
-# Destruir solo Grafana (mantener monitoring)
-terraform destroy -target=azurerm_container_group.grafana
-
-# Ver logs de Grafana en tiempo real
-az container logs --name aci-grafana-dev \
-  --resource-group rg-cloudmon-dev --follow
-
-# Obtener contraseña de Grafana
-az keyvault secret show \
-  --vault-name <kv-name> \
-  --name grafana-admin-password \
-  --query value -o tsv
-```
