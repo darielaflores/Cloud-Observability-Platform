@@ -49,7 +49,7 @@ variable "allowed_ssh_ip" {
 variable "alert_email" {
   description = "Email donde se enviarán las alertas de Azure Monitor"
   type        = string
-  default     = "admin@example.com"
+  default     = "dariela.flores@tajamar365.com"
 }
 
 variable "tags" {
