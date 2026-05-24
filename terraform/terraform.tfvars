@@ -11,7 +11,7 @@ vm_size             = "Standard_B1s"
 public_key_path     = "~/.ssh/id_rsa.pub"
 
 # Tu email para recibir alertas
-alert_email = "tu-email@ejemplo.com"
+alert_email = "dariela.flores@tajamar365.com"
 
 # IP permitida para SSH (reemplaza por tu IP real para mayor seguridad)
 # Ejemplo: allowed_ssh_ip = "83.45.123.10/32"
