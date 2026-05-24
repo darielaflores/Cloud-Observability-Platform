@@ -316,7 +316,7 @@ resource "azurerm_monitor_workspace" "main" {
 # ------------------------------------------------------------------
 resource "azurerm_automation_account" "main" {
   name                = "aa-remediation"
-  location            = azurerm_resource_group.main.location
+  location            = "northeurope"
   resource_group_name = azurerm_resource_group.main.name
   sku_name            = "Basic"
 
