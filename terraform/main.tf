@@ -314,7 +314,7 @@ resource "azurerm_dashboard_grafana" "main" {
   name                              = "grafana-monitoring-lab"
   location                          = azurerm_resource_group.main.location
   resource_group_name               = azurerm_resource_group.main.name
-  grafana_major_version             = "11"
+  grafana_major_version             = "10"
   api_key_enabled                   = true
   deterministic_outbound_ip_enabled = false
   public_network_access_enabled     = true
