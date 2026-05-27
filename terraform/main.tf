@@ -60,7 +60,7 @@ resource "azurerm_network_security_group" "main" {
 }
 
 # ------------------------------------------------------------------
-# NSG RULE — SSH (restringido a tu IP si defines allowed_ssh_ip)
+# NSG RULE — SSH
 # ------------------------------------------------------------------
 resource "azurerm_network_security_rule" "ssh" {
   name                        = "AllowSSH"
