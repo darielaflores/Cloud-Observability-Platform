@@ -1,6 +1,6 @@
 # =============================================================
-# MAIN.TF — Azure Monitoring Lab (Student Subscription)
-# Includes: VM + AMA Agent + Log Analytics + Grafana + Alerts
+# MAIN.TF — Despliegue y Monitorización con Azure
+# Incluye: VM + AMA Agent + Log Analytics + Grafana + Alerts
 # =============================================================
 
 # ------------------------------------------------------------------
