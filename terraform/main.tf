@@ -154,23 +154,20 @@ resource "azurerm_log_analytics_workspace" "main" {
 # DATA COLLECTION RULE (DCR) — Recopila métricas y logs de la VM
 # ------------------------------------------------------------------
 resource "azurerm_monitor_data_collection_rule" "main" {
-  name                = "dcr-monitoring-vm"
+  name                = "dcr-vm-monitoring"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
+  tags                = var.tags
 
   destinations {
     log_analytics {
       workspace_resource_id = azurerm_log_analytics_workspace.main.id
       name                  = "law-destination"
     }
-
-    azure_monitor_metrics {
-      name = "metrics-destination"
-    }
   }
 
   data_flow {
-    streams      = ["Microsoft-InsightsMetrics", "Microsoft-Perf"]
+    streams      = ["Microsoft-Perf", "Microsoft-InsightsMetrics"]
     destinations = ["law-destination"]
   }
 
@@ -183,30 +180,25 @@ resource "azurerm_monitor_data_collection_rule" "main" {
     performance_counter {
       streams                       = ["Microsoft-Perf", "Microsoft-InsightsMetrics"]
       sampling_frequency_in_seconds = 60
+      name                          = "perfCounterDataSource"
       counter_specifiers = [
         "\\Processor Information(_Total)\\% Processor Time",
-        "\\Processor Information(_Total)\\% Privileged Time",
-        "\\Processor Information(_Total)\\% User Time",
-        "\\Memory\\% Committed Bytes In Use",
         "\\Memory\\Available Bytes",
         "\\LogicalDisk(_Total)\\% Free Space",
         "\\LogicalDisk(_Total)\\Disk Read Bytes/sec",
         "\\LogicalDisk(_Total)\\Disk Write Bytes/sec",
         "\\Network Interface(*)\\Bytes Received/sec",
-        "\\Network Interface(*)\\Bytes Sent/sec"
+        "\\Network Interface(*)\\Bytes Sent/sec",
       ]
-      name = "perfCounterDataSource"
     }
 
     syslog {
       streams        = ["Microsoft-Syslog"]
-      facility_names = ["auth", "authpriv", "cron", "daemon", "kern", "syslog", "user"]
+      facility_names = ["auth", "authpriv", "daemon", "kern", "syslog"]
       log_levels     = ["Warning", "Error", "Critical", "Alert", "Emergency"]
       name           = "syslogDataSource"
     }
   }
-
-  tags = var.tags
 }
 
 # ------------------------------------------------------------------
@@ -346,7 +338,7 @@ resource "azurerm_monitor_workspace" "main" {
 # ------------------------------------------------------------------
 resource "azurerm_automation_account" "main" {
   name                = "aa-remediation"
-  location            = "swedencentral"
+  location            = "eastus2"
   resource_group_name = azurerm_resource_group.main.name
   sku_name            = "Basic"
 
