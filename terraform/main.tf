@@ -1,5 +1,5 @@
 # =============================================================
-# MAIN.TF — Despliegue y Monitorización con Azure
+# MAIN.TF — Despliegue y Monitorización en Azure
 # Incluye: VM + AMA Agent + Log Analytics + Grafana + Alerts
 # =============================================================
 
