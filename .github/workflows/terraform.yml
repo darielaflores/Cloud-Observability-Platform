@@ -70,7 +70,7 @@ jobs:
       - name: "Terraform Init (solo validación)"
         id: init
         run: |
-          terraform init \
+          terraform init -upgrade \
             -backend=false \
             -input=false
  
@@ -135,7 +135,7 @@ jobs:
       - name: "Terraform Init"
         id: init
         run: |
-          terraform init \
+          terraform init -upgrade\
             -input=false \
             -no-color
             
