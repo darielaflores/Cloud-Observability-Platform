@@ -47,3 +47,8 @@ output "automation_account_name" {
   description = "Nombre del Automation Account para runbooks"
   value       = azurerm_automation_account.main.name
 }
+
+output "webapp_url" {
+  description = "URL de la aplicación web desplegada"
+  value       = "http://${azurerm_public_ip.main.ip_address}"
+}
