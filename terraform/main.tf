@@ -167,7 +167,7 @@ resource "azurerm_monitor_data_collection_rule" "main" {
   }
 
   data_flow {
-    streams      = ["Microsoft-Perf", "Microsoft-InsightsMetrics"]
+    streams      = ["Microsoft-Perf"]
     destinations = ["law-destination"]
   }
 
@@ -178,7 +178,7 @@ resource "azurerm_monitor_data_collection_rule" "main" {
 
   data_sources {
     performance_counter {
-      streams                       = ["Microsoft-Perf", "Microsoft-InsightsMetrics"]
+      streams                       = ["Microsoft-Perf"]
       sampling_frequency_in_seconds = 60
       name                          = "perfCounterDataSource"
       counter_specifiers = [
