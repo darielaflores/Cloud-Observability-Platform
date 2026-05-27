@@ -334,22 +334,6 @@ resource "azurerm_monitor_workspace" "main" {
 }
 
 # ------------------------------------------------------------------
-# AUTOMATION ACCOUNT (para runbooks de remediación)
-# ------------------------------------------------------------------
-resource "azurerm_automation_account" "main" {
-  name                = "aa-remediation"
-  location            = "eastus2"
-  resource_group_name = azurerm_resource_group.main.name
-  sku_name            = "Basic"
-
-  identity {
-    type = "SystemAssigned"
-  }
-
-  tags = var.tags
-}
-
-# ------------------------------------------------------------------
 # ROLE ASSIGNMENT — Grafana puede leer métricas del RG
 # ------------------------------------------------------------------
 resource "azurerm_role_assignment" "grafana_monitoring_reader" {
