@@ -77,6 +77,24 @@ resource "azurerm_network_security_rule" "ssh" {
 }
 
 # ------------------------------------------------------------------
+# NSG RULE — HTTP
+# ------------------------------------------------------------------
+
+resource "azurerm_network_security_rule" "http" {
+  name                        = "AllowHTTP"
+  priority                    = 1002
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "80"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.main.name
+}
+
+# ------------------------------------------------------------------
 # NSG RULE — Deny All Inbound (resto del tráfico bloqueado)
 # ------------------------------------------------------------------
 resource "azurerm_network_security_rule" "deny_all_inbound" {
@@ -236,13 +254,25 @@ resource "azurerm_linux_virtual_machine" "main" {
   }
 
   # Script de arranque: instala dependencias básicas
-  custom_data = base64encode(<<-EOF
+  custom_data = base64encode(<<-EOT
     #!/bin/bash
     apt-get update -y
-    apt-get install -y stress-ng sysstat curl wget
+    apt-get install -y stress-ng sysstat curl wget docker.io
+    systemctl enable docker
+    systemctl start docker
     systemctl enable sysstat
     systemctl start sysstat
-  EOF
+
+    # Lanza Nginx como aplicación web
+    docker run -d \
+      --name webapp \
+      --restart always \
+      -p 80:80 \
+      nginx:latest
+
+    # Página personalizada para demostrar que funciona
+    docker exec webapp bash -c 'echo "<html><body style=\"background:#0f1117;color:#fff;font-family:sans-serif;text-align:center;padding:80px\"><h1>🚀 Azure Monitoring Lab</h1><p>Aplicación desplegada automáticamente con Terraform</p><p>Monitorizada en tiempo real con Grafana</p></body></html>" > /usr/share/nginx/html/index.html'
+  EOT
   )
 
   identity {
