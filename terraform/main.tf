@@ -263,7 +263,7 @@ resource "azurerm_linux_virtual_machine" "main" {
       nginx:latest
 
     # Página personalizada para demostrar que funciona
-    docker exec webapp bash -c 'echo "<html><body style=\"background:#0f1117;color:#fff;font-family:sans-serif;text-align:center;padding:80px\"><h1>🚀 Azure Monitoring Lab</h1><p>Aplicación desplegada automáticamente con Terraform</p><p>Monitorizada en tiempo real con Grafana</p></body></html>" > /usr/share/nginx/html/index.html'
+    docker exec webapp bash -c 'echo "<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Azure Monitoring Lab</title></head><body style="background:#0f1117;color:#fff;font-family:sans-serif;text-align:center;padding:80px"><h1>Despliegue y Monitorización Automatizada en Azure con Terraform y Grafana</h1><p>Aplicación desplegada automáticamente con Terraform</p><p>Monitorizada en tiempo real con Grafana</p></body></html>" > /usr/share/nginx/html/index.html'
   EOT
   )
 
