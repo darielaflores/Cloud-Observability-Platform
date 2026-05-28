@@ -157,26 +157,27 @@ resource "azurerm_monitor_data_collection_rule" "main" {
   name                = "dcr-vm-monitoring"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
+  kind                = "Linux"
   tags                = var.tags
 
   destinations {
     log_analytics {
       workspace_resource_id = azurerm_log_analytics_workspace.main.id
-      name                  = "lawdest"
+      name                  = "la-dest"
     }
   }
 
   data_flow {
     streams      = ["Microsoft-Syslog"]
-    destinations = ["lawdest"]
+    destinations = ["la-dest"]
   }
 
   data_sources {
     syslog {
       streams        = ["Microsoft-Syslog"]
-      facility_names = ["auth", "authpriv", "daemon", "kern", "syslog"]
-      log_levels     = ["Warning", "Error", "Critical", "Alert", "Emergency"]
-      name           = "syslogDataSource"
+      facility_names = ["syslog"]
+      log_levels     = ["Error", "Critical", "Alert", "Emergency"]
+      name           = "syslog-source"
     }
   }
 }
