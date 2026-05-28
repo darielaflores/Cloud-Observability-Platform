@@ -162,36 +162,16 @@ resource "azurerm_monitor_data_collection_rule" "main" {
   destinations {
     log_analytics {
       workspace_resource_id = azurerm_log_analytics_workspace.main.id
-      name                  = "law-destination"
+      name                  = "lawdest"
     }
-  }
-
-  data_flow {
-    streams      = ["Microsoft-Perf"]
-    destinations = ["law-destination"]
   }
 
   data_flow {
     streams      = ["Microsoft-Syslog"]
-    destinations = ["law-destination"]
+    destinations = ["lawdest"]
   }
 
   data_sources {
-    performance_counter {
-      streams                       = ["Microsoft-Perf"]
-      sampling_frequency_in_seconds = 60
-      name                          = "perfCounterDataSource"
-      counter_specifiers = [
-        "\\Processor Information(_Total)\\% Processor Time",
-        "\\Memory\\Available Bytes",
-        "\\LogicalDisk(_Total)\\% Free Space",
-        "\\LogicalDisk(_Total)\\Disk Read Bytes/sec",
-        "\\LogicalDisk(_Total)\\Disk Write Bytes/sec",
-        "\\Network Interface(*)\\Bytes Received/sec",
-        "\\Network Interface(*)\\Bytes Sent/sec",
-      ]
-    }
-
     syslog {
       streams        = ["Microsoft-Syslog"]
       facility_names = ["auth", "authpriv", "daemon", "kern", "syslog"]
