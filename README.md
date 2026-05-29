@@ -1,4 +1,4 @@
-# · Cloud Monitoring Platform — Terraform + Grafana + Azure
+# Cloud Monitoring Platform — Terraform + Grafana + Azure
 
 Infraestructura como código para desplegar una plataforma de monitoring completa en Azure con Grafana, Application Insights, Log Analytics y alertas automatizadas.
 
